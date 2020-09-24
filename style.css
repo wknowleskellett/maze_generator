@@ -7,3 +7,17 @@
 	line-height: 1em;
 	font-family: box_drawing;
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #mazeBox, #mazeBox * {
+    visibility: visible;
+  }
+  #mazeBox {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
