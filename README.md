@@ -1,4 +1,4 @@
-### Maze Generation
+# Maze Generation
 
 Yeah, so this generates mazes!
 Kinda neat. 
