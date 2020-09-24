@@ -7,19 +7,32 @@
 </head>
 <body>
 	<label for="width">Width:</label>
-	<input type="text" id="width" name="width" pattern="\d+"><br>
+	<input type="text" id="width" pattern="\d+"><br>
 	<label for="height">Height:</label>
-	<input type="text" id="height" name="height" pattern="\d+"><br>
+	<input type="text" id="height" pattern="\d+"><br>
 	<button onclick="setDims()" id="set_button">Set</button><br><br>
 
-	<input type="checkbox" id="instant" name="instant" onclick="checkToggle()">
+	<input type="checkbox" id="instant" onclick="checkToggle()">
 	<label for="speed">Instant</label><br>
 
 	<label for="speed">Speed:</label>
-	<input type="text" id="speed" name="speed" pattern="\d+"><br>
+	<input type="text" id="speed" pattern="\d+"><br>
 	<button onclick="checkSpeed()" id="run_button">Step</button><br><br>
 
 	<p id="mazeBox" class="box">This is for box drawing<br></p>
+
+	<div id="secretOptions" style="visibility:block;">
+		<label for="x">X:</label>
+		<input type="text" id="x" pattern="\d+"><br>
+		<label for="y">Y:</label>
+		<input type="text" id="y" pattern="\d+"><br>
+		<input type="radio" name="orientation" value="horizontal" id="horizontal" pattern="\d+">
+		<label for="horizontal">Horizontal</label><br>
+		<input type="radio" name="orientation" value="vertical" id="vertical" pattern="\d+">
+		<label for="vertical">Vertical</label><br>
+
+		<button onclick="toggleBorder()" id="toggle_button">Toggle</button><br><br>
+	</div>
 	<script>
 		let width=3;
 		let height=4;
@@ -37,6 +50,10 @@
 
 		let rBut = document.getElementById("run_button");
 
+		let xBox = document.getElementById("x_value");
+		let yBox = document.getElementById("y_value");
+		let oBox = document.getElementById("");
+
 		function checkToggle() {
 			sBox.disabled = cBox.checked;
 			if (cBox.checked) {
@@ -45,7 +62,7 @@
 				rBut.innerHTML = "Step";
 			}
 		}
-		
+
 		function checkValue(box, min) {
 			let retVal = parseInt(box.value, 10);
 			if (isNaN(retVal)) {
@@ -68,6 +85,10 @@
 			speed = checkValue(sBox, 1);
 			instant = cBox.checked;
 			tick();
+		}
+
+		function toggleBorder() {
+
 		}
 	</script>
 	<script src="start.js"></script>
