@@ -1,0 +1,9 @@
+@font-face {
+  font-family: 'box_drawing';
+  src: url('box/boxDrawing.eot?#iefix') format('embedded-opentype'),  url('box/boxDrawing.woff') format('woff'), url('box/boxDrawing.ttf')  format('truetype'), url('box/boxDrawing.svg#boxDrawing') format('svg');
+}
+
+.box {
+	line-height: 1em;
+	font-family: box_drawing;
+}

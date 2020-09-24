@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="style.css" type="text/css" charset="utf-8" />
+</head>
+<body>
+	<label for="width">Width:</label>
+	<input type="text" id="width" name="width" pattern="\d+"><br><br>
+	<label for="height">Height:</label>
+	<input type="text" id="height" name="height" pattern="\d+"><br><br><br>
+
+	<button onclick="setDims()" id="set_button">Set</button>
+	<input type="checkbox" id="instant" name="instant" onclick="checkToggle()">
+	<label for="speed">Instant</label><br><br>
+
+	<label for="speed">Speed:</label>
+	<input type="text" id="speed" name="speed" pattern="\d+"><br><br>
+
+	<button onclick="checkSpeed()" id="run_button">Step</button>
+
+	<p id="mazeBox" class="box">This is for box drawing<br></p>
+	<script>
+		let width=3;
+		let height=4;
+		let speed = 5;
+		let instant = false;
+
+		let wBox=document.getElementById("width");
+		let hBox=document.getElementById("height");
+		let cBox=document.getElementById("instant");
+		let sBox=document.getElementById("speed");
+		wBox.value = width;
+		hBox.value = height;
+		sBox.value = speed;
+		cBox.checked = instant;
+
+		let rBut = document.getElementById("run_button");
+
+		function checkToggle() {
+			sBox.disabled = cBox.checked;
+			if (cBox.checked) {
+				rBut.innerHTML = "Generate";
+			} else {
+				rBut.innerHTML = "Step";
+			}
+		}
+		
+		function checkValue(box, min) {
+			let retVal = Math.max(min, parseInt(box.value, 10));
+			box.value = retVal;
+			return retVal;
+		}
+
+		function setDims() {
+			width = checkValue(wBox, 1);
+			height = checkValue(hBox, 1);
+			console.log(width, height);
+			run();
+		}
+
+		function checkSpeed() {
+			speed = checkValue(sBox, 1);
+			instant = cBox.checked;
+			tick();
+		}
+	</script>
+	<script src="start.js"></script>
+</body>
+</html>
