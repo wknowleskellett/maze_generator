@@ -7,25 +7,25 @@
 </head>
 <body>
 	<label for="width">Width:</label>
-	<input type="text" id="width" pattern="\d+"><br>
+	<input type="number" id="width"><br>
 	<label for="height">Height:</label>
-	<input type="text" id="height" pattern="\d+"><br>
-	<button onclick="setDims()" id="set_button">Set</button><br><br>
+	<input type="number" id="height"><br>
+	<button onclick="setDims()" id="set_button">Set / Reset</button><br><br>
 
 	<input type="checkbox" id="instant" onclick="checkToggle()">
 	<label for="speed">Instant</label><br>
 
 	<label for="speed">Speed:</label>
-	<input type="text" id="speed" pattern="\d+"><br>
+	<input type="number" id="speed"><br>
 	<button onclick="checkSpeed()" id="run_button">Step</button><br><br>
 
 	<p id="mazeBox" class="box">This is for box drawing<br></p>
 
 	<div id="secretOptions" style="visibility:block;">
 		<label for="x">X:</label>
-		<input type="text" id="x" pattern="\d+"><br>
+		<input type="number" id="x_value"><br>
 		<label for="y">Y:</label>
-		<input type="text" id="y" pattern="\d+"><br>
+		<input type="number" id="y_value"><br>
 		<input type="radio" name="orientation" value="horizontal" id="horizontal" pattern="\d+">
 		<label for="horizontal">Horizontal</label><br>
 		<input type="radio" name="orientation" value="vertical" id="vertical" pattern="\d+">
@@ -33,27 +33,8 @@
 
 		<button onclick="toggleBorder()" id="toggle_button">Toggle</button><br><br>
 	</div>
+	<script src="header.js"></script>
 	<script>
-		let width=3;
-		let height=4;
-		let speed = 5;
-		let instant = false;
-
-		let wBox=document.getElementById("width");
-		let hBox=document.getElementById("height");
-		let cBox=document.getElementById("instant");
-		let sBox=document.getElementById("speed");
-		wBox.value = width;
-		hBox.value = height;
-		sBox.value = speed;
-		cBox.checked = instant;
-
-		let rBut = document.getElementById("run_button");
-
-		let xBox = document.getElementById("x_value");
-		let yBox = document.getElementById("y_value");
-		let oBox = document.getElementById("");
-
 		function checkToggle() {
 			sBox.disabled = cBox.checked;
 			if (cBox.checked) {
@@ -63,32 +44,92 @@
 			}
 		}
 
-		function checkValue(box, min) {
+		function checkValue(box, vals) {
 			let retVal = parseInt(box.value, 10);
 			if (isNaN(retVal)) {
-				retVal = min;
+				retVal = vals.fallback;
 			} else {
-				retVal = Math.max(min, retVal);
+				if (vals.hasOwnProperty('min')) {
+					retVal = Math.max(vals.min, retVal);
+				}
+				if (vals.hasOwnProperty('max')) {
+					retVal = Math.min(vals.max, retVal);
+				}
 			}
 			box.value = retVal;
 			return retVal;
 		}
 
 		function setDims() {
-			width = checkValue(wBox, 1);
-			height = checkValue(hBox, 1);
-			console.log(width, height);
+			width = checkValue(wBox, {fallback:10,min:1});
+			height = checkValue(hBox, {fallback:10,min:1});
+
 			run();
 		}
 
 		function checkSpeed() {
-			speed = checkValue(sBox, 1);
+			speed = checkValue(sBox, {fallback:1,min:1});
 			instant = cBox.checked;
+
 			tick();
 		}
 
 		function toggleBorder() {
+			locked = true;
+			rBut.disabled = true;
 
+			let maxX;
+			let maxY;
+
+			let isHorizontal = oBut.checked;
+			if (isHorizontal) {
+				maxX = width-1;
+				maxY = height;
+			} else {
+				maxX = width;
+				maxY = height-1;
+			}
+
+			let x0 = checkValue(xBox, {fallback:0,min:-1,max:maxX});
+			let y0 = checkValue(yBox, {fallback:0,min:-1,max:maxY});
+			let x1 = x0;
+			let y1 = y0;
+
+			if (isHorizontal) {
+				x1++;
+			} else {
+				y1++;
+			}
+
+			let in_bounds = x0 >= 0 && y0 >= 0 && x1 < width && y1 < height;
+
+			console.log(x0, y0, x1, y1, in_bounds);
+			if (isHorizontal) {
+				if (rowConnections[y0+1][x0+1]==0) {
+					if (in_bounds && set(spots[y0][x0]) != set(spots[y1][x1])) {
+						spots[y0][x0].parent.parent = spots[y1][x1].parent;
+
+						numSpots -= 1;
+					}
+
+					rowConnections[y0+1][x0+1]=1;
+				} else {
+					rowConnections[y0+1][x0+1]=0;
+				}
+			} else {
+				if (colConnections[y0+1][x0+1]==0) {
+					if (in_bounds && set(spots[y0][x0]) != set(spots[y1][x1])) {
+						spots[y0][x0].parent.parent = spots[y1][x1].parent;
+
+						numSpots -= 1;
+					}
+
+					colConnections[y0+1][x0+1]=1;
+				} else {
+					colConnections[y0+1][x0+1]=0;
+				}
+			}
+			display();
 		}
 	</script>
 	<script src="start.js"></script>

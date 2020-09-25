@@ -1,40 +1,11 @@
-
-// This is all the boxes
-const chars = [
-	'┼',
-	'┬',
-	'┤',
-	'┐',
-	'┴',
-	'─',
-	'┘',
-	'╴',
-	'├',
-	'┌',
-	'│',
-	'╷',
-	'└',
-	'╶',
-	'╵',
-	' ',
-	'■',
-	'□',
-	'▪',
-	'▫'
-];
-
-let spots;
-let numSpots;
-let rowConnections;
-let colConnections;
-
 function Spot(x, y) {
 	this.parent = this;
 	this.coord = "("+x+", "+y+")";
 }
 
 function run() {
-
+	locked = false;
+	rBut.disabled=false;
 	spots = [];
 	for (let i=0; i<height; i++) {
 		spots.push([]);
@@ -109,14 +80,14 @@ function tick() {
 		// This approach lets the maze pause before adding the cute little
 		// entrance/exit openings on the last step
 		while ((instant || i<speed) && numSpots > 1) {
-			step();
+			merge();
 			i++;
 		}
 	}
 	display();
 }
 
-function step() {
+function merge() {
 	// Make a connection
 	let success = false;
 	while (!success) {
@@ -151,6 +122,7 @@ function step() {
 	numSpots -= 1;
 	//console.log(spots);
 }
+
 function display() {
 	// Display
 	let text = "";
