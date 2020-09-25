@@ -20,8 +20,12 @@
 	<input type="number" id="speed"><br>
 	<button onclick="checkSpeed()" id="run_button">Step</button><br><br>
 
-	<button onclick="save()" id="save_button">Save</button>
-	<button onclick="load()" id="load_button">Load</button><br><br>
+	<button onclick="window.print()" id="print_button">Print</button>
+
+	<div style="visibility:hidden;">
+		<button onclick="save()" id="save_button">Save</button>
+		<button onclick="load()" id="load_button">Load</button><br><br>
+	</div>
 
 	<p id="mazeBox" class="box">This is for box drawing<br></p>
 
