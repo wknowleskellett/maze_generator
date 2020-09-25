@@ -52,3 +52,8 @@ let rBut = document.getElementById("run_button");
 let xBox = document.getElementById("x_value");
 let yBox = document.getElementById("y_value");
 let oBut = document.getElementById("horizontal");
+
+function Spot(x, y) {
+	this.parent = this;
+	this.coord = "("+x+", "+y+")";
+}

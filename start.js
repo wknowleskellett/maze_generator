@@ -1,8 +1,3 @@
-function Spot(x, y) {
-	this.parent = this;
-	this.coord = "("+x+", "+y+")";
-}
-
 function run() {
 	locked = false;
 	rBut.disabled=false;
@@ -28,8 +23,6 @@ function run() {
 			rowConnections[i].push(val);
 		}
 	}
-	//console.log("rowConnections: ");
-	//console.log(rowConnections);
 
 	colConnections = [];
 	for (let i=0; i<height+1; i++) {
@@ -44,8 +37,6 @@ function run() {
 			colConnections[i].push(val);
 		}
 	}
-	//console.log("colConnections: ");
-	//console.log(colConnections);
 
 	display();
 }
@@ -109,8 +100,6 @@ function merge() {
 		if (set(spots[y0][x0]) != set(spots[y1][x1])) {
 			spots[y0][x0].parent.parent = spots[y1][x1].parent;
 
-			//console.log(y0, x0, y1, x1, spots[y0][x0], spots[y1][x1]);
-
 			if (isHorizontal) {
 				rowConnections[y0+1][x0+1]=1;
 			} else {
@@ -120,7 +109,6 @@ function merge() {
 		}
 	}
 	numSpots -= 1;
-	//console.log(spots);
 }
 
 function display() {

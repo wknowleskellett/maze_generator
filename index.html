@@ -19,9 +19,12 @@
 	<input type="number" id="speed"><br>
 	<button onclick="checkSpeed()" id="run_button">Step</button><br><br>
 
+	<button onclick="save()" id="save_button">Save</button>
+	<button onclick="load()" id="load_button">Load</button><br><br>
+
 	<p id="mazeBox" class="box">This is for box drawing<br></p>
 
-	<div id="secretOptions" style="visibility:block;">
+	<div id="secretOptions" style="visibility:hidden;">
 		<label for="x">X:</label>
 		<input type="number" id="x_value"><br>
 		<label for="y">Y:</label>
@@ -34,6 +37,7 @@
 		<button onclick="toggleBorder()" id="toggle_button">Toggle</button><br><br>
 	</div>
 	<script src="header.js"></script>
+	<script src="fileWriter.js"></script>
 	<script>
 		function checkToggle() {
 			sBox.disabled = cBox.checked;
@@ -103,7 +107,6 @@
 
 			let in_bounds = x0 >= 0 && y0 >= 0 && x1 < width && y1 < height;
 
-			console.log(x0, y0, x1, y1, in_bounds);
 			if (isHorizontal) {
 				if (rowConnections[y0+1][x0+1]==0) {
 					if (in_bounds && set(spots[y0][x0]) != set(spots[y1][x1])) {
@@ -130,6 +133,28 @@
 				}
 			}
 			display();
+		}
+
+		function save() {
+			let writer = Object.create(FileWriter);
+			// 5 > "101" > ['1', '0', '1'] > [1, 0, 1]
+			writer.push.apply(writer,width.toString(2).padStart(32,'0').split('').map(digit => parseInt(digit,2)));
+			writer.flush(false);
+			writer.push.apply(writer,height.toString(2).padStart(32,'0').split('').map(digit => parseInt(digit,2)));
+			writer.flush(false);
+			
+			for (let i=0; i<rowConnections.length; i++) {
+				writer.push.apply(writer,rowConnections[i]);
+			}
+			
+			for (let i=0; i<colConnections.length; i++) {
+				writer.push.apply(writer,colConnections[i]);
+			}
+			
+			writer.download();
+			
+				
+			
 		}
 	</script>
 	<script src="start.js"></script>
