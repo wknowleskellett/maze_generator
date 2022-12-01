@@ -1,26 +1,66 @@
 # Maze Generation
 
-Yeah, so this generates mazes!
+Yeah, so this generates mazes. Kinda neat.
 
-Kinda neat. 
+Like the one below!
 
-Check it out on [my website](https://www.williamknowleskellett.dev/projects/maze-generator/ "Go generate a maze!").
+```
+╷╶─┬─┬┬─┬───┬┬┬────┬┐
+│┌╴╵╶┤╵╶┘┌╴╷╵│└─╴╶┬┘│
+├┴┬╴┌┴╴╶─┤┌┼╴├╴┌──┼╴│
+│╶┤╷╵┌─┬┬┼┤└╴╵┌┘╷╷╵╶┤
+│┌┘└─┤╶┤╵│└┬╴╶┘╷││╶┐│
+││┌┐┌┘╷└╴│╷└─╴╷│└┴─┤│
+│╵╵├┴─┘┌┐├┴┬╴╶┴┴┐╶─┤│
+│╶┬┘╷╶┐│╵╵╶┤╶─┐╷├╴╷││
+├┐└─┼─┴┘╶┬┐├╴╶┤└┤╶┤││
+│╵╶┬┘┌╴┌╴╵│└┐╷│╷└┬┤││
+├┐╷╵┌┘╶┤╷╶┴┐├┼┘│┌┘└┤│
+│└┼─┘╶┐└┤╶┬┘││┌┴┘┌┬┘│
+│┌┘┌╴┌┘╶┼─┴┬┘└┘┌┐│└┬┤
+│└╴│┌┘╷╶┼╴╶┘╶─┐╵└┴╴││
+├─╴│├─┼╴├┐╷┌╴╶┴─┐┌╴╵│
+├╴╶┴┤╶┼┐│└┘└┐╷╶┬┼┘┌┐│
+├┬╴╷╵┌┘│└╴╶┬┘│┌┘└┬┘╵│
+│╵╷└┬┤╶┤╷┌─┤┌┴┤┌┐╵╷╷│
+├╴├╴│└┐│└┤╶┤└╴└┤│┌┘├┤
+│╷│╶┤╷╵╵╷╵╷│┌╴╶┘├┘╶┘│
+└┴┴─┴┴──┴─┴┴┴───┴──╴╵
+```
+I made my own font for this, so it looks better on the actual program.
 
 ## Using
 
-I tried to make this obvious from the interface, but:
-You can "Set" the dimensions of the maze, and then "Step" through the algorithm of generating it. If you've selected the option "Instant," you can generate the entire maze with one click. Otherwise, you can choose how many steps to run each time.
+Check it out on [my website](https://www.williamknowleskellett.dev/projects/maze-generator/ "Go generate a maze!").
+
+Choose your maze dimensions and click `Set/Reset`. To start the program over at any point, click that button.
+
+The default is to watch the algorithm step by step. To make the maze generation instantaneous, check `Instant` and click `Generate`.
+
+The `Speed` field determines how many iterations of the algorithm occur every time `Step` is pressed.
+
+After the maze is generated, you can click `Step` or `Generate` one more time to open entrances and exits at the top left and bottom right of the maze.
+
+The webpage is printable. Click `Print` or use your browser's controls to print the page.
 
 ## Algorithm
 
-This uses Krusgal's algorithm as shown on the Wikipedia page. I've made a maze generator in Java before, but I thought it would be easy and fun to implement in JS. It was.
+This uses Krusgal's algorithm. This algorithm has pros and cons.
+
+|         | Feature                                       |
+|---------|-----------------------------------------------|
+| &check; | Interesting to observe maze generation        |
+| &cross; | Generates a maze that is interesting to solve |
 
 ## Approach
 
-Previously in using this algorithm, I lacked the patience to read the Wikipedia link on how to efficiently merge sets. This time around, I was pleased to find that the recommended method used the same exact tree idea I had come up with myself, but with the ingenious twist of setting the root of the tree to directly be the parent of any of its children. It was a joy setting that up.
+I made a new data structure for sets of objects, optimized for the two operations required by the algorithm:
 
-I wanted to draw the maze with Unicode's BOX DRAWING characters. I thought it would be a fun opportunity to use Marching Squares. But, internet standards had other plans. Any generally available monospace fonts did not seem to have the "Half lines," from U+2574-2577. I couldn't find a font I wanted that did, so I made my own Box Drawing font.
+- Check whether two coordinates are in the same set (each is in exactly one set)
+- Join two sets, given an element from each set
+
+I wanted to draw the maze with Unicode's BOX DRAWING characters. Since common fonts don't have all of these characters defined, my mazes couldn't be displayed in most browsers without a custom font. I made my own. 
 
 ## My Font
 
-Box Drawing (my font) defines the full 2500-257F range of characters in the Unicode Box Drawing category, in addition to u+20 (space), u+25a1, u+25aa, and u+25ab, which are all boxes of their own sort. These are all fixed width. In fact, the width and height of the letters are equal (which may eliminate some uses, but it's quite elegant for drawing boxes). The only characters not drawn to the specification are the Character Cell Arcs, 256D-2570, due to limitations in my font editor.
+I had already tested my hand at font creation in the past, so I just used [FontStruct](https://fontstruct.com/fontstructions/show/1936682/boxdrawing2) and did the simplest thing I could. If you plan on using this font, don't use the FontStruct version. Use the [woff2](https://www.williamknowleskellett.dev/projects/maze-generator/assets/boxdrawing-webfont.woff2) or [woff](https://www.williamknowleskellett.dev/projects/maze-generator/assets/boxdrawing-webfont.woff) versions embedded in my site. Or reach out to me for standard font file types. Just because FontStruct had some bugs in the font that I fixed manually after downloading.
