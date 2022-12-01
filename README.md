@@ -1,7 +1,10 @@
 # Maze Generation
 
 Yeah, so this generates mazes!
+
 Kinda neat. 
+
+Check it out on [my website](https://www.williamknowleskellett.dev/projects/maze-generator/ "Go generate a maze!").
 
 ## Using
 
